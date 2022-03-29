@@ -7,8 +7,8 @@ export default function Login() {
     return (
         <Container>
         <img src={logo}/>
-        <Input type="email" placeholder="email"></Input>
-        <Input type="password" placeholder="senha"></Input>
+        <Input type="email" placeholder="email" required></Input>
+        <Input type="password" placeholder="senha" required></Input>
         <Link to="/habitos">
         <Submit type="submit">Entrar</Submit>
         </Link>
@@ -45,7 +45,6 @@ const Input = styled.input`
    border-radius: 5px;
    color: #DBDBDB;
    font-size: 19.976px;
-
 `;
 
 const Submit = styled.button`
