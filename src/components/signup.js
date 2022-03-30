@@ -3,18 +3,21 @@ import logo from "./../assets/logotrackit.png";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Loading from "./loading";
 
 export default function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     console.log(email, password, name, image)
 
     function signUpUser(event) {
      event.preventDefault()
-      
+      setIsLoading(true);
+
      const data = {
       email,
       password,
@@ -28,7 +31,11 @@ export default function SignUp() {
       console.log(response);
       navigate("/");
     })
-    promise.catch(error => console.log(error.response));
+    promise.catch(error => {
+      console.log(error.response);
+      setIsLoading(true);
+      alert("Confira os dados e tente novamente")
+   });
   }
 
 
@@ -36,11 +43,11 @@ export default function SignUp() {
         <Container>
          <img src={logo}/>
          <Form onSubmit={signUpUser}>
-         <Input type="email" placeholder="email" value={email} required onChange={(e) => setEmail(e.target.value)}></Input>
-         <Input type="password" placeholder="senha" value={password} required onChange={(e) => setPassword(e.target.value)}></Input>
-         <Input type="text" placeholder="nome" value={name} required onChange={(e) => setName(e.target.value)}></Input>
-         <Input type="url" placeholder="foto" value={image} required maxlength="100" onChange={(e) => setImage(e.target.value)}></Input>
-         <Submit>Cadastrar</Submit>
+         <Input type="email" placeholder="email" value={email} required onChange={(e) => setEmail(e.target.value)} disabled={isLoading}></Input>
+         <Input type="password" placeholder="senha" value={password} required onChange={(e) => setPassword(e.target.value)} disabled={isLoading}></Input>
+         <Input type="text" placeholder="nome" value={name} required onChange={(e) => setName(e.target.value)} disabled={isLoading}></Input>
+         <Input type="url" placeholder="foto" value={image} required maxlength="300" onChange={(e) => setImage(e.target.value)} disabled={isLoading}></Input>
+         <Submit disabled={isLoading}>{isLoading? <Loading/> : "Cadastrar"}</Submit>
          </Form>
          <Link to="/">
          <p>Já tem uma conta? Faça login!</p>
@@ -84,6 +91,10 @@ const Submit = styled.button`
    border: none;
    color: white;
    font-size: 20.976px;
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
 `;
 
 const Form = styled.form`

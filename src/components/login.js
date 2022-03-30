@@ -3,16 +3,19 @@ import logo from "./../assets/logotrackit.png";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Loading from "./loading";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     console.log(email, password);
     const navigate = useNavigate();
     
     
     function loginUser(event) {
-      event.preventDefault()
+      event.preventDefault();
+      setIsLoading(true);
       
      const data = {
       email,
@@ -27,6 +30,7 @@ export default function Login() {
     })
     promise.catch(error => { 
       console.log(error.response);
+      setIsLoading(false);
       if(error.response.status === 401) {
         return alert("Usuário ou Senha inválidos")
       }
@@ -38,11 +42,11 @@ export default function Login() {
         <Container>
          <img src={logo}/>
         <Form onSubmit={loginUser}>
-         <Input type="email" placeholder="email" value={email} required onChange={(e) => setEmail(e.target.value)}>
+         <Input type="email" placeholder="email" value={email} required onChange={(e) => setEmail(e.target.value)} disabled={isLoading}>
          </Input>
-         <Input type="password" placeholder="senha" value={password} required onChange={(e) => setPassword(e.target.value)}>
+         <Input type="password" placeholder="senha" value={password} required onChange={(e) => setPassword(e.target.value)} disabled={isLoading}>
          </Input>
-         <Submit type="submit">Entrar</Submit>
+         <Submit type="submit" disabled={isLoading}> {isLoading? <Loading /> : "Entrar"}</Submit>
         </Form>
          <Link to="/cadastro">
          <p>Não tem uma conta? Cadastre-se!</p>
@@ -86,6 +90,11 @@ const Submit = styled.button`
     border: none;
     color: white;
     font-size: 20.976px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 `;
 
 const Form = styled.form`
@@ -94,3 +103,4 @@ const Form = styled.form`
   align-items: center;
   gap: 6px;
 `;
+

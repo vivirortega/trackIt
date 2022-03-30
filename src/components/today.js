@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import button from "./../assets/button.png";
-import Habit from "./habit";
 
 export default function Today() {
     const [habits, setHabits] = useState("");
