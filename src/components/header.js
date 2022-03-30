@@ -1,10 +1,14 @@
 import styled from "styled-components";
+import UserContext from "../contexts/usercontext";
+import React from "react";
+import { useContext } from "react";
 
 export default function Header () {
+    const { image } = useContext(UserContext);
     return (
     <HeaderInfo>
       <h1>Track It</h1>
-      <img src="https://media.discordapp.net/attachments/828075838259331093/957783409114087424/FOtQDXaXsAcUfaU.png"/>
+      <img src={image}/>
     </HeaderInfo>
     )    
 }

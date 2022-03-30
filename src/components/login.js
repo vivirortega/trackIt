@@ -2,13 +2,15 @@ import styled from "styled-components";
 import logo from "./../assets/logotrackit.png";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Loading from "./loading";
+import UserContext from "../contexts/usercontext";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const { setToken, setImage } = useContext(UserContext);
     console.log(email, password);
     const navigate = useNavigate();
     
@@ -26,6 +28,8 @@ export default function Login() {
 
     promise.then(response => {
       console.log(response);
+      setToken(response.data.token);
+      setImage(response.data.image);
       navigate("/hoje");
     })
     promise.catch(error => { 

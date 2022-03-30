@@ -1,7 +1,11 @@
+import Header from "./header";
+import Footer from "./footer";
+
 export default function Historic() {
     return (
         <>
-        <h1>Tela de histórico</h1>
+        <Header />
+        <Footer />
         </>
     )
 }

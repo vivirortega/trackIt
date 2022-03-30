@@ -4,9 +4,15 @@ import SignUp from "./components/signup";
 import Habits from "./components/habits";
 import Today from "./components/today"
 import Historic from "./components/historic";
+import UserContext from "./contexts/usercontext";
+import { useState } from "react";
 
 export default function App() {
+    const [token, setToken] = useState("");
+    const [image, setImage] = useState("");
+
     return (
+        <UserContext.Provider value={{token, setToken, setImage, image}}>
         <BrowserRouter>
         <Routes>
         <Route path="/" element={<Login />} />
@@ -16,5 +22,6 @@ export default function App() {
         <Route path="/historico" element={<Historic />} />
         </Routes>
         </BrowserRouter>
+        </UserContext.Provider>
     )
 }
