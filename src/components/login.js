@@ -1,20 +1,52 @@
 import styled from "styled-components";
 import logo from "./../assets/logotrackit.png";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    console.log(email, password);
+    const navigate = useNavigate();
+    
+    
+    function loginUser(event) {
+      event.preventDefault()
+      
+     const data = {
+      email,
+      password,
+    };
+
+    const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", data);
+
+    promise.then(response => {
+      console.log(response);
+      navigate("/hoje");
+    })
+    promise.catch(error => { 
+      console.log(error.response);
+      if(error.response.status === 401) {
+        return alert("Usuário ou Senha inválidos")
+      }
+    });
+
+  }
 
     return (
         <Container>
-        <img src={logo}/>
-        <Input type="email" placeholder="email" required></Input>
-        <Input type="password" placeholder="senha" required></Input>
-        <Link to="/habitos">
-        <Submit type="submit">Entrar</Submit>
-        </Link>
-        <Link to="/cadastro">
-        <p>Não tem uma conta? Cadastre-se!</p>
-        </Link>
+         <img src={logo}/>
+        <Form onSubmit={loginUser}>
+         <Input type="email" placeholder="email" value={email} required onChange={(e) => setEmail(e.target.value)}>
+         </Input>
+         <Input type="password" placeholder="senha" value={password} required onChange={(e) => setPassword(e.target.value)}>
+         </Input>
+         <Submit type="submit">Entrar</Submit>
+        </Form>
+         <Link to="/cadastro">
+         <p>Não tem uma conta? Cadastre-se!</p>
+         </Link>
         </Container>
     )
 }
@@ -25,7 +57,6 @@ const Container = styled.div`
    flex-direction: column;
    justify-content: center;
    align-items: center;
-   gap: 6px;
    height: 100vh;
 
  p {
@@ -55,4 +86,11 @@ const Submit = styled.button`
     border: none;
     color: white;
     font-size: 20.976px;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 `;
