@@ -23,6 +23,8 @@ export default function Habits() {
     },
   };
 
+  console.log("esse é o valor do select", days);
+
   function habitsPost(event) {
     event.preventDefault();
     setIsLoading(true);
@@ -31,22 +33,28 @@ export default function Habits() {
       name: habits,
       days: selectDay,
     };
+    if (selectDay.length > []) {
+      const promise = axios.post(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+        data,
+        config
+      );
 
-    const promise = axios.post(
-      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
-      data,
-      config
-    );
+      promise.then((response) => {
+        console.log(response);
+        setNewHabit(false);
+        setHasHabit(data);
+      });
 
-    promise.then((response) => {
-      console.log(response);
-      setNewHabit(false);
-      setHasHabit(data);
-    });
-    promise.catch((error) => {
-      console.log(error.response);
+      promise.catch((error) => {
+        console.log(error.response);
+        setIsLoading(false);
+        alert("Dados inválidos, por favor tente novamente");
+      });
+    } else {
+      alert("É preciso preencher ao menos um dia");
       setIsLoading(false);
-    });
+    }
   }
 
   useEffect(() => {
@@ -78,6 +86,7 @@ export default function Habits() {
 
       promise.then((response) => {
         console.log(response.data);
+        setHasHabit(true);
       });
       promise.catch((error) => {
         console.log(error.response);
