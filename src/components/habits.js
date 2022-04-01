@@ -23,7 +23,7 @@ export default function Habits() {
     },
   };
 
-  console.log("esse é o valor do select", days);
+  console.log(userHabit.length);
 
   function habitsPost(event) {
     event.preventDefault();
@@ -44,6 +44,8 @@ export default function Habits() {
         console.log(response);
         setNewHabit(false);
         setHasHabit(data);
+        setHabits("");
+        setSelectDay("");
       });
 
       promise.catch((error) => {
@@ -97,6 +99,7 @@ export default function Habits() {
   function newCard() {
     console.log("cliquei");
     setNewHabit(true);
+    setIsLoading(false);
   }
 
   return (
@@ -147,7 +150,7 @@ export default function Habits() {
         ) : (
           <></>
         )}
-        {hasHabit.length === 0 ? (
+        {userHabit.length === 0 ? (
           <p className="no-habit">
             Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
             começar a trackear!
