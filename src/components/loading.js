@@ -3,7 +3,6 @@ import { ThreeDots } from "react-loader-spinner";
 const Loading = () => {
   return (
     <>
-    
       <ThreeDots
         type="ThreeDots"
         color="white"
@@ -11,7 +10,6 @@ const Loading = () => {
         width={80}
         timeout={10000}
       />
-
     </>
   );
 };
