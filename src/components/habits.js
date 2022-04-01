@@ -65,17 +65,22 @@ export default function Habits() {
   }, []);
 
   function deleteHabit(id) {
-    const promise = axios.delete(
-      `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`,
-      config
-    );
+    const confirm = window.confirm("Deseja excluir o hábito?");
+    console.log("deletei");
 
-    promise.then((response) => {
-      console.log(response.data);
-    });
-    promise.catch((error) => {
-      console.log(error.response);
-    });
+    if (confirm === true) {
+      const promise = axios.delete(
+        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`,
+        config
+      );
+
+      promise.then((response) => {
+        console.log(response.data);
+      });
+      promise.catch((error) => {
+        console.log(error.response);
+      });
+    }
   }
 
   function newCard() {
@@ -140,7 +145,11 @@ export default function Habits() {
               <HabitCreated key={habit.id}>
                 <div className="habits">
                   <p className="habits-name">{name}</p>
-                  <img className="trash" src={trash} />
+                  <img
+                    className="trash"
+                    src={trash}
+                    onClick={() => deleteHabit(habit.id)}
+                  />
                 </div>
                 <div className="all-days">
                   {days.map((day, id) => {

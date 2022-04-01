@@ -18,7 +18,7 @@ export default function Footer() {
 }
 
 const FooterInfo = styled.footer`
-  width: 375px;
+  width: 100%;
   height: 70px;
   position: fixed;
   bottom: 0;
