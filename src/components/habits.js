@@ -6,11 +6,13 @@ import { useState, useContext, useEffect } from "react";
 import button from "./../assets/button.png";
 import UserContext from "../contexts/usercontext";
 import trash from "./../assets/trash.png";
+import Loading from "./loading";
 
 export default function Habits() {
   const [habits, setHabits] = useState("");
   const [newHabit, setNewHabit] = useState(false);
   const [hasHabit, setHasHabit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectDay, setSelectDay] = useState([]);
   const [userHabit, setUserHabit] = useState([]);
   const { token } = useContext(UserContext);
@@ -21,10 +23,9 @@ export default function Habits() {
     },
   };
 
-  console.log(selectDay);
-
   function habitsPost(event) {
     event.preventDefault();
+    setIsLoading(true);
 
     const data = {
       name: habits,
@@ -44,6 +45,7 @@ export default function Habits() {
     });
     promise.catch((error) => {
       console.log(error.response);
+      setIsLoading(false);
     });
   }
 
@@ -62,7 +64,7 @@ export default function Habits() {
       setUserHabit(response.data);
       setNewHabit(false);
     });
-  }, []);
+  }, [hasHabit]);
 
   function deleteHabit(id) {
     const confirm = window.confirm("Deseja excluir o hábito?");
@@ -103,12 +105,13 @@ export default function Habits() {
               placeholder="nome do habito"
               value={habits}
               onChange={(e) => setHabits(e.target.value)}
+              disabled={isLoading}
               required
             ></Name>
             <div className="all-days">
               {days.map((day, id) => {
                 return (
-                  <button
+                  <div
                     className="button-day"
                     key={id}
                     onClick={() => {
@@ -121,13 +124,15 @@ export default function Habits() {
                     }
                   >
                     {day}
-                  </button>
+                  </div>
                 );
               })}
             </div>
             <div className="buttons">
               <p onClick={() => setNewHabit(false)}>Cancelar</p>
-              <button>Salvar</button>
+              <button type="submit" disabled={isLoading}>
+                {isLoading ? <Loading /> : "Salvar"}
+              </button>
             </div>
           </Form>
         ) : (
@@ -233,6 +238,14 @@ const Form = styled.form`
     border-radius: 4.63636px;
     border: none;
     margin-right: 16px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  svg {
+    margin-bottom: 100px;
   }
 
   .button-day {
@@ -246,6 +259,8 @@ const Form = styled.form`
     line-height: 25px;
     color: #dbdbdb;
     text-align: center;
+    padding-top: 0;
+    justify-content: center;
   }
 
   p {
@@ -263,6 +278,7 @@ const Form = styled.form`
     display: flex;
     justify-content: flex-start;
     margin-left: 19px;
+    gap: 4px;
   }
 
   .buttons {
