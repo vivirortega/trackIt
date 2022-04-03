@@ -4,19 +4,24 @@ import styled from "styled-components";
 import axios from "axios";
 import { useState, useContext, useEffect } from "react";
 import UserContext from "../contexts/usercontext";
+import dayjs from "dayjs";
+import 'dayjs/locale/pt-br';
 
 export default function Today() {
   const [allHabits, setAllHabits] = useState([]);
   const { token } = useContext(UserContext);
+  dayjs.locale('pt-br');
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
 
+  console.log(dayjs());
+
   useEffect(() => {
     const promise = axios.get(
-      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",
       config
     );
 
@@ -34,6 +39,7 @@ export default function Today() {
     <>
       <Header />
       <Main>
+        <h1>{dayjs().format('dddd, DD/MM')}</h1>
         {allHabits.map((habits) => {
           return (
             <Habit key={habits.id}>
@@ -55,6 +61,13 @@ const Main = styled.main`
   height: 100vh;
   align-items: center;
   padding-top: 100px;
+
+  h1 {
+    font-size: 22.976px;
+    line-height: 29px;
+    color: #126ba5;
+    padding-bottom: 50px;
+  }
 `;
 
 const Habit = styled.section`
@@ -65,6 +78,7 @@ const Habit = styled.section`
   border: 1px solid black;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
 
   p {
     font-size: 19.976px;
@@ -81,5 +95,6 @@ const Habit = styled.section`
     border: 1px solid #e7e7e7;
     border-radius: 5px;
     margin-right: 13px;
+    margin-top: 13px;
   }
 `;

@@ -5,7 +5,7 @@ const Loading = () => {
     <>
       <ThreeDots
         type="ThreeDots"
-        color="black"
+        color="white"
         height={40}
         width={80}
         timeout={10000}

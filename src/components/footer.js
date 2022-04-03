@@ -8,7 +8,9 @@ export default function Footer() {
         <p>Hábitos</p>
       </Link>
       <Link to="/hoje">
-        <p>Hoje</p>
+        <div className="main-button">
+        <p className="today-button">Hoje</p>
+        </div>
       </Link>
       <Link to="/historico">
         <p>Histórico</p>
@@ -30,9 +32,27 @@ const FooterInfo = styled.footer`
     color: #52b6ff;
     font-size: 17.976px;
     line-height: 22px;
+    z-index: 1;
   }
 
   a {
     text-decoration: none;
   }
+
+ .main-button{
+  background-color: #52B6FF;
+  width: 91px;
+  height: 91px;
+  border-radius: 100%;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+ } 
+
+ .today-button {
+   color: white;
+   text-align: center;
+ }
 `;
