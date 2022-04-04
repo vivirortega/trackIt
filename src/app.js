@@ -10,9 +10,10 @@ import { useState } from "react";
 export default function App() {
     const [token, setToken] = useState("");
     const [image, setImage] = useState("");
+    const [percentage, setPercentage] = useState(0);
 
     return (
-        <UserContext.Provider value={{token, setToken, setImage, image}}>
+        <UserContext.Provider value={{token, setToken, setImage, image, percentage, setPercentage}}>
         <BrowserRouter>
         <Routes>
         <Route path="/" element={<Login />} />

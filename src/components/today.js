@@ -10,17 +10,18 @@ import "dayjs/locale/pt-br";
 export default function Today() {
   const [allHabits, setAllHabits] = useState([]);
   const [refresh, setRefresh] = useState(0);
-  const { token } = useContext(UserContext);
+  const { token, setPercentage } = useContext(UserContext);
   dayjs.locale("pt-br");
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-
+  
   const filter = allHabits.filter(checkIsMark);
   const percentage = Math.round((100 / allHabits.length) * filter.length);
   console.log(percentage);
+  setPercentage(percentage);
 
   useEffect(() => {
     const promise = axios.get(
