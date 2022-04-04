@@ -5,19 +5,22 @@ import axios from "axios";
 import { useState, useContext, useEffect } from "react";
 import UserContext from "../contexts/usercontext";
 import dayjs from "dayjs";
-import 'dayjs/locale/pt-br';
+import "dayjs/locale/pt-br";
 
 export default function Today() {
   const [allHabits, setAllHabits] = useState([]);
+  const [refresh, setRefresh] = useState(0);
   const { token } = useContext(UserContext);
-  dayjs.locale('pt-br');
+  dayjs.locale("pt-br");
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
 
-  console.log(dayjs());
+  const filter = allHabits.filter(checkIsMark);
+  const percentage = Math.round((100 / allHabits.length) * filter.length);
+  console.log(percentage);
 
   useEffect(() => {
     const promise = axios.get(
@@ -25,26 +28,104 @@ export default function Today() {
       config
     );
 
+    promise.catch((error) => {});
+
     promise.then((response) => {
-      console.log(response.data);
       setAllHabits(response.data);
     });
+  }, [refresh]);
+
+  function markHabit(id, done) {
+    console.log(done);
+
+    const promise = axios.post(
+      `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,
+      {},
+      config
+    );
 
     promise.catch((error) => {
-      console.log(error.response);
+      alert("Algo deu errado! Tente novamente mais tarde.");
     });
-  }, []);
 
+    promise.then((response) => {
+      setRefresh(refresh + 1);
+    });
+  }
+
+  function markOffHabit(id, done) {
+    console.log(done);
+
+    const promise = axios.post(
+      `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`,
+      {},
+      config
+    );
+
+    promise.catch((error) => {
+      alert("Algo deu errado! Tente novamente mais tarde.");
+    });
+
+    promise.then((response) => {
+      setRefresh(refresh + 1);
+    });
+  }
+
+  function checkIsMark(obj) {
+    if (obj.done) {
+      return obj;
+    }
+  }
   return (
     <>
       <Header />
       <Main>
-        <h1>{dayjs().format('dddd, DD/MM')}</h1>
+        <div className="title">
+          <h1>{dayjs().format("dddd, DD/MM")}</h1>
+          {percentage > 0 ? (
+            <p className="conclude">{percentage}% dos hábitos concluídos.</p>
+          ) : (
+            <p className="no-conclude">Nenhum hábito concluído ainda</p>
+          )}
+        </div>
+
         {allHabits.map((habits) => {
           return (
             <Habit key={habits.id}>
-              <p>{habits.name}</p>
-              <input type="checkbox"></input>
+              <div>
+                <h2>{habits.name}</h2>
+                <div className="p-row">
+                  <p>Sequência atual:</p>{" "}
+                  <p
+                    className="row"
+                    style={habits.done ? { color: "#8FC549" } : {}}
+                  >
+                    {habits.currentSequence} dias
+                  </p>
+                </div>
+                <div className="p-row">
+                  <p>Seu recorde:</p>{" "}
+                  <p
+                    className="row"
+                    style={
+                      habits.currentSequence >= habits.highestSequence &&
+                      habits.done
+                        ? { color: "#8FC549" }
+                        : {}
+                    }
+                  >
+                    {habits.highestSequence} dias
+                  </p>
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                onChange={
+                  habits.done
+                    ? () => markOffHabit(habits.id, habits.done)
+                    : () => markHabit(habits.id, habits.done)
+                }
+              ></input>
             </Habit>
           );
         })}
@@ -66,7 +147,35 @@ const Main = styled.main`
     font-size: 22.976px;
     line-height: 29px;
     color: #126ba5;
-    padding-bottom: 50px;
+  }
+
+  .conclude {
+    color: #8fc549;
+    font-size: 17.976px;
+    line-height: 22px;
+    padding-bottom: 28px;
+  }
+
+  .no-conclude {
+    font-size: 17.976px;
+    line-height: 22px;
+    color: #bababa;
+    padding-bottom: 28px;
+  }
+
+  .p-row {
+    display: flex;
+    flex-direction: row;
+  }
+  .row {
+    margin-left: 4px;
+  }
+  .title {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 17px;
   }
 `;
 
@@ -75,17 +184,28 @@ const Habit = styled.section`
   height: 94px;
   background-color: #ffffff;
   border-radius: 5px;
-  border: 1px solid black;
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 
-  p {
+  h2 {
     font-size: 19.976px;
     line-height: 25px;
     color: #666666;
     margin-top: 13px;
     margin-left: 15px;
+  }
+
+  p {
+    font-size: 12.976px;
+    line-height: 16px;
+    color: #666666;
+    margin-left: 15px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
   }
 
   input {

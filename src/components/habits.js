@@ -323,7 +323,6 @@ const HabitCreated = styled.section`
   height: 91px;
   background-color: #ffffff;
   border-radius: 5px;
-  border: 1px solid black;
   margin-top: 20px;
 
   .habits-name {
