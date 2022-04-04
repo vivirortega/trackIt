@@ -17,10 +17,9 @@ export default function Today() {
       Authorization: `Bearer ${token}`,
     },
   };
-  
+
   const filter = allHabits.filter(checkIsMark);
   const percentage = Math.round((100 / allHabits.length) * filter.length);
-  console.log(percentage);
   setPercentage(percentage);
 
   useEffect(() => {
@@ -36,9 +35,7 @@ export default function Today() {
     });
   }, [refresh]);
 
-  function markHabit(id, done) {
-    console.log(done);
-
+  function markHabit(id) {
     const promise = axios.post(
       `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,
       {},
@@ -54,9 +51,7 @@ export default function Today() {
     });
   }
 
-  function markOffHabit(id, done) {
-    console.log(done);
-
+  function markOffHabit(id) {
     const promise = axios.post(
       `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`,
       {},
@@ -121,10 +116,11 @@ export default function Today() {
               </div>
               <input
                 type="checkbox"
+                checked={habits.done ? "checked" : ""}
                 onChange={
                   habits.done
-                    ? () => markOffHabit(habits.id, habits.done)
-                    : () => markHabit(habits.id, habits.done)
+                    ? () => markOffHabit(habits.id)
+                    : () => markHabit(habits.id)
                 }
               ></input>
             </Habit>
@@ -217,5 +213,9 @@ const Habit = styled.section`
     border-radius: 5px;
     margin-right: 13px;
     margin-top: 13px;
+  }
+
+  input:checked {
+    background-color: #8fc549;
   }
 `;

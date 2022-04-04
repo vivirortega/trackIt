@@ -12,7 +12,6 @@ export default function SignUp() {
   const [image, setImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  console.log(email, password, name, image);
 
   function signUpUser(event) {
     event.preventDefault();
@@ -31,11 +30,9 @@ export default function SignUp() {
     );
 
     promise.then((response) => {
-      console.log(response);
       navigate("/");
     });
     promise.catch((error) => {
-      console.log(error.response);
       setIsLoading(true);
       alert("Confira os dados e tente novamente");
     });

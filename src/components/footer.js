@@ -15,18 +15,18 @@ export default function Footer() {
       </Link>
       <Link to="/hoje">
         <div className="main-button">
-        <CircularProgressbar
-              value={percentage}
-              text={"Hoje"}
-              background='#FFFFFF'
-              backgroundPadding={6}
-              styles={buildStyles({
-                backgroundColor: "#3e98c7",
-                textColor: "#fff",
-                pathColor: "#fff",
-                trailColor: "transparent"
+          <CircularProgressbar
+            value={percentage}
+            text={"Hoje"}
+            background="#FFFFFF"
+            backgroundPadding={6}
+            styles={buildStyles({
+              backgroundColor: "#3e98c7",
+              textColor: "#fff",
+              pathColor: "#fff",
+              trailColor: "transparent",
             })}
-            />
+          />
         </div>
       </Link>
       <Link to="/historico">
@@ -56,20 +56,19 @@ const FooterInfo = styled.footer`
     text-decoration: none;
   }
 
- .main-button{
-  background-color: #52B6FF;
-  width: 91px;
-  height: 91px;
-  border-radius: 100%;
-  margin-bottom: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
- } 
+  .main-button {
+    background-color: #52b6ff;
+    width: 91px;
+    height: 91px;
+    border-radius: 100%;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
- .today-button {
-   color: white;
-   text-align: center;
- }
+  .today-button {
+    color: white;
+    text-align: center;
+  }
 `;

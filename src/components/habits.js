@@ -23,8 +23,6 @@ export default function Habits() {
     },
   };
 
-  console.log(userHabit.length);
-
   function habitsPost(event) {
     event.preventDefault();
     setIsLoading(true);
@@ -41,7 +39,6 @@ export default function Habits() {
       );
 
       promise.then((response) => {
-        console.log(response);
         setNewHabit(false);
         setHasHabit(data);
         setHabits("");
@@ -49,7 +46,6 @@ export default function Habits() {
       });
 
       promise.catch((error) => {
-        console.log(error.response);
         setIsLoading(false);
         alert("Dados inválidos, por favor tente novamente");
       });
@@ -65,12 +61,9 @@ export default function Habits() {
       config
     );
 
-    promise.catch((error) => {
-      console.log(error.response);
-    });
+    promise.catch((error) => {});
 
     promise.then((response) => {
-      console.log("estou renderizando", response.data);
       setUserHabit(response.data);
       setNewHabit(false);
     });
@@ -78,7 +71,6 @@ export default function Habits() {
 
   function deleteHabit(id) {
     const confirm = window.confirm("Deseja excluir o hábito?");
-    console.log("deletei");
 
     if (confirm === true) {
       const promise = axios.delete(
@@ -87,17 +79,13 @@ export default function Habits() {
       );
 
       promise.then((response) => {
-        console.log(response.data);
         setHasHabit(true);
       });
-      promise.catch((error) => {
-        console.log(error.response);
-      });
+      promise.catch((error) => {});
     }
   }
 
   function newCard() {
-    console.log("cliquei");
     setNewHabit(true);
     setIsLoading(false);
   }

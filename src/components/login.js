@@ -11,7 +11,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { setToken, setImage } = useContext(UserContext);
-  console.log(email, password);
   const navigate = useNavigate();
 
   function loginUser(event) {
@@ -29,13 +28,11 @@ export default function Login() {
     );
 
     promise.then((response) => {
-      console.log(response);
       setToken(response.data.token);
       setImage(response.data.image);
       navigate("/hoje");
     });
     promise.catch((error) => {
-      console.log(error.response);
       setIsLoading(false);
       if (error.response.status === 401) {
         return alert("Usuário ou Senha inválidos");
